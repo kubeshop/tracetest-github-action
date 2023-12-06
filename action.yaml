@@ -48,6 +48,8 @@ runs:
           echo "🟡 You should define the 'token', 'endpoint' or 'configFile' parameter to use this action."
           echo "Please access https://github.com/kubeshop/tracetest-github-action to see more details on how to use this action."
           exit 1
+        else
+          echo "🟢 Required parameters found."
         fi
 
     - id: install-tracetest
