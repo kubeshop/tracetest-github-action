@@ -37,9 +37,9 @@ runs:
       name: Validate Tracetest Action Parameters
       shell: bash
       run: |
-        export TRACETEST_TOKEN = "${{ inputs.token }}"
-        export TRACETEST_ENDPOINT = "${{ inputs.endpoint }}"
-        export TRACETEST_CONFIG_FILE_CONTENT = "${{ inputs.configFile }}"
+        TRACETEST_TOKEN="${{ inputs.token }}"
+        TRACETEST_ENDPOINT="${{ inputs.endpoint }}"
+        TRACETEST_CONFIG_FILE_CONTENT="${{ inputs.configFile }}"
 
         if [ "$TRACETEST_TOKEN" == "" ] &&  [ "$TRACETEST_ENDPOINT" == "" ] &&  [ "$TRACETEST_CONFIG_FILE_CONTENT" == "" ]
         then
@@ -73,9 +73,9 @@ runs:
 
         # Tracetest CLI configuration
 
-        export TRACETEST_TOKEN = "${{ inputs.token }}"
-        export TRACETEST_ENDPOINT = "${{ inputs.endpoint }}"
-        export TRACETEST_CONFIG_FILE_CONTENT = "${{ inputs.configFile }}"
+        TRACETEST_TOKEN="${{ inputs.token }}"
+        TRACETEST_ENDPOINT="${{ inputs.endpoint }}"
+        TRACETEST_CONFIG_FILE_CONTENT="${{ inputs.configFile }}"
 
         if [ "$TRACETEST_TOKEN" != "" ]
         then
