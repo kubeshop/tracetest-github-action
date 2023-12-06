@@ -154,7 +154,9 @@ runs:
 
         kit::wf::group '🟢 Running background agent daemon' \
           <<<"tracetest start --api-key ********"
-        nohup tracetest start --api-key $TRACETEST_API_KEY' < /dev/null &> "$AGENT_LOG" &
+
+        nohup tracetest start --api-key $TRACETEST_API_KEY' --mode verbose < /dev/null &> "$AGENT_LOG" &
         kit::wf::output 'log' <<< "$AGENT_LOG"
         sleep $SLEEP_TIME
+
         kit::wf::group '🔎 Current agent log' < "$AGENT_LOG"
