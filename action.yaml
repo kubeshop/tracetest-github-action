@@ -37,13 +37,16 @@ runs:
       name: Validate Tracetest Action Parameters
       shell: bash
       run: |
+        echo "🔎 Checking if one of the required parameters was passed to the action..."
+
         TRACETEST_TOKEN="${{ inputs.token }}"
         TRACETEST_ENDPOINT="${{ inputs.endpoint }}"
         TRACETEST_CONFIG_FILE_CONTENT="${{ inputs.configFile }}"
 
         if [ "$TRACETEST_TOKEN" == "" ] &&  [ "$TRACETEST_ENDPOINT" == "" ] &&  [ "$TRACETEST_CONFIG_FILE_CONTENT" == "" ]
         then
-          echo "You should define the 'token', 'endpoint' or 'configFile' parameter to use this action"
+          echo "🟡 You should define the 'token', 'endpoint' or 'configFile' parameter to use this action."
+          echo "Please access https://github.com/kubeshop/tracetest-github-action to see more details on how to use this action."
           exit 1
         fi
 
@@ -79,21 +82,21 @@ runs:
 
         if [ "$TRACETEST_TOKEN" != "" ]
         then
-          kit::wf::group 'Configure CLI' \
+          kit::wf::group '⚙️ Configure CLI' \
             <<<"tracetest configure --token *******"
             tracetest configure --token $TRACETEST_TOKEN
             exit 0
         fi
         if [ "$TRACETEST_ENDPOINT" != "" ]
         then
-          kit::wf::group 'Configure CLI' \
+          kit::wf::group '⚙️ Configure CLI' \
             <<<"tracetest configure --endpoint $TRACETEST_ENDPOINT"
             tracetest configure --endpoint $TRACETEST_ENDPOINT
             exit 0
         fi
         if [ "$TRACETEST_CONFIG_FILE_CONTENT" != "" ]
         then
-          kit::wf::group 'Configure CLI' \
+          kit::wf::group '⚙️ Configure CLI' \
             <<<"Copying config file content to ~/.tracetest/config.yml"
             cat $TRACETEST_CONFIG_FILE_CONTENT > ~/.tracetest/config.yml
         fi
@@ -137,19 +140,19 @@ runs:
 
         # Tracetest Agent configuration
 
-        export TRACETEST_API_KEY = "${{ inputs.apiKey }}"
-        export SLEEP_TIME = "${{ inputs.sleep }}"
-        export AGENT_LOG = "${{ runner.temp }}/tracetest-agent.$RANDOM.log"
+        TRACETEST_API_KEY="${{ inputs.apiKey }}"
+        SLEEP_TIME="${{ inputs.sleep }}"
+        AGENT_LOG="${{ runner.temp }}/tracetest-agent.$RANDOM.log"
 
         if [ "$TRACETEST_API_KEY" = "" ]
         then
-          echo "Tracetest API Key not defined, skipping agent setup"
+          echo "🟡 Tracetest API Key not defined in 'apiKey' action parameter, skipping agent setup"
           exit 0
         fi
 
-        kit::wf::group 'Run backgroup agent daemon' \
+        kit::wf::group '🟢 Running background agent daemon' \
           <<<"tracetest start --api-key ********"
         nohup tracetest start --api-key $TRACETEST_API_KEY' < /dev/null &> "$AGENT_LOG" &
         kit::wf::output 'log' <<< "$AGENT_LOG"
         sleep $SLEEP_TIME
-        kit::wf::group 'Current agent log' < "$AGENT_LOG"
+        kit::wf::group '🔎 Current agent log' < "$AGENT_LOG"
