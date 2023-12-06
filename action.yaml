@@ -45,38 +45,26 @@ runs:
 
         if [ "$TRACETEST_TOKEN" == "" ] &&  [ "$TRACETEST_ENDPOINT" == "" ] &&  [ "$TRACETEST_CONFIG_FILE_CONTENT" == "" ]
         then
-          echo "🟡 You should define the 'token', 'endpoint' or 'configFile' parameter to use this action."
-          echo "Please access https://github.com/kubeshop/tracetest-github-action to see more details on how to use this action."
+          echo "🟡 You should define the 'token', 'endpoint' or 'configFile' parameter to use this action"
+          echo "Please access https://github.com/kubeshop/tracetest-github-action to see more details on how to use this action"
           exit 1
         else
-          echo "🟢 Required parameters found."
+          echo "🟢 Required parameters found"
         fi
 
     - id: install-tracetest
       name: Install Tracetest CLI
       shell: bash
       run: |
+        echo '🚚 Installing Tracetest CLI...'
         curl -L https://tracetest.io/install | bash -s -- '${{ inputs.version }}'
+        echo "🟢 Tracetest CLI successfully installed"
 
     - id: configure-cli
       name: Configure Tracetest CLI
       shell: bash
       run: |
-        # Helper functions
-
-        # Group stdin to stderr with title
-        # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#grouping-log-lines
-        #   $1: group title
-        #   stdin: logs
-        #   stderr: grouped logs
-        #   $?: 0 if successful and non-zero otherwise
-        function kit::wf::group {
-            echo "::group::$1"      >&2
-            echo "$(< /dev/stdin)"  >&2
-            echo '::endgroup::'     >&2
-        }
-
-        # Tracetest CLI configuration
+        echo '🚚 Configuring CLI...'
 
         TRACETEST_TOKEN="${{ inputs.token }}"
         TRACETEST_ENDPOINT="${{ inputs.endpoint }}"
@@ -84,63 +72,27 @@ runs:
 
         if [ "$TRACETEST_TOKEN" != "" ]
         then
-          kit::wf::group '⚙️ Configure CLI' \
-            <<<"tracetest configure --token *******"
-            tracetest configure --token $TRACETEST_TOKEN
-            exit 0
+          tracetest configure --token $TRACETEST_TOKEN
+          echo "🟢 Tracetest CLI successfully configured with token"
+          exit 0
         fi
         if [ "$TRACETEST_ENDPOINT" != "" ]
         then
-          kit::wf::group '⚙️ Configure CLI' \
-            <<<"tracetest configure --endpoint $TRACETEST_ENDPOINT"
-            tracetest configure --endpoint $TRACETEST_ENDPOINT
-            exit 0
+          tracetest configure --endpoint $TRACETEST_ENDPOINT
+          echo "🟢 Tracetest CLI successfully configured with endpoint"
+          exit 0
         fi
         if [ "$TRACETEST_CONFIG_FILE_CONTENT" != "" ]
         then
-          kit::wf::group '⚙️ Configure CLI' \
-            <<<"Copying config file content to ~/.tracetest/config.yml"
-            cat $TRACETEST_CONFIG_FILE_CONTENT > ~/.tracetest/config.yml
+          cat $TRACETEST_CONFIG_FILE_CONTENT > ~/.tracetest/config.yml
+          echo "🟢 Tracetest CLI successfully configured with cliConfig"
         fi
 
     - id: start-agent
       name: Start Tracetest Agent
       shell: bash
       run: |
-        # Helper functions
-
-        # Group stdin to stderr with title
-        # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#grouping-log-lines
-        #   $1: group title
-        #   stdin: logs
-        #   stderr: grouped logs
-        #   $?: 0 if successful and non-zero otherwise
-        function kit::wf::group {
-            echo "::group::$1"      >&2
-            echo "$(< /dev/stdin)"  >&2
-            echo '::endgroup::'     >&2
-        }
-
-        # Set stdin as value to output of current step with given name
-        # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
-        # https://renehernandez.io/snippets/multiline-strings-as-a-job-output-in-github-actions/
-        #   $1: output name
-        #   $2: masked value in logs
-        #   stdin: output value
-        #   stderr: grouped logs
-        #   $?: 0 if successful and non-zero otherwise
-        function kit::wf::output {
-            local val
-            val="$(< /dev/stdin)"
-            { # https://www.gnu.org/software/bash/manual/bash.html#Command-Grouping
-                echo "$1<<__GITHUB_OUTPUT__"
-                echo "$val"
-                echo '__GITHUB_OUTPUT__'
-            } >> "$GITHUB_OUTPUT"
-            kit::wf::group "🖨️ step output '$1' has been set" <<< "${2:-$val}"
-        }
-
-        # Tracetest Agent configuration
+        echo '🚚 Configuring Tracetest Agent...'
 
         TRACETEST_API_KEY="${{ inputs.apiKey }}"
         SLEEP_TIME="${{ inputs.sleep }}"
@@ -152,11 +104,6 @@ runs:
           exit 0
         fi
 
-        kit::wf::group '🟢 Running background agent daemon' \
-          <<<"tracetest start --api-key ********"
-
-        nohup tracetest start --api-key $TRACETEST_API_KEY' --mode verbose < /dev/null &> "$AGENT_LOG" &
-        kit::wf::output 'log' <<< "$AGENT_LOG"
+        echo '🟢 Running background agent daemon'
+        nohup tracetest start --api-key $TRACETEST_API_KEY' --mode verbose
         sleep $SLEEP_TIME
-
-        kit::wf::group '🔎 Current agent log' < "$AGENT_LOG"
