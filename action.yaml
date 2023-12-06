@@ -16,6 +16,8 @@ inputs:
     description: 'Agent API Key'
   endpoint:
     description: 'Tracetest endpoint'
+  configFile:
+    description: 'Tracetest CLI custom config file'
   sleep:
     description: 'Seconds to wait before action finished (default as `3`)'
     default: '3'
@@ -37,9 +39,11 @@ runs:
       run: |
         export TRACETEST_TOKEN = "${{ inputs.token }}"
         export TRACETEST_ENDPOINT = "${{ inputs.endpoint }}"
-        if [ "$TRACETEST_TOKEN" == "" ] &&  [ "$TRACETEST_ENDPOINT" == "" ]
+        export TRACETEST_CONFIG_FILE_CONTENT = "${{ inputs.configFile }}"
+
+        if [ "$TRACETEST_TOKEN" == "" ] &&  [ "$TRACETEST_ENDPOINT" == "" ] &&  [ "$TRACETEST_CONFIG_FILE_CONTENT" == "" ]
         then
-          echo "You should define the 'token' or 'endpoint' parameter to use this action"
+          echo "You should define the 'token', 'endpoint' or 'configFile' parameter to use this action"
           exit 1
         fi
 
@@ -71,6 +75,7 @@ runs:
 
         export TRACETEST_TOKEN = "${{ inputs.token }}"
         export TRACETEST_ENDPOINT = "${{ inputs.endpoint }}"
+        export TRACETEST_CONFIG_FILE_CONTENT = "${{ inputs.configFile }}"
 
         if [ "$TRACETEST_TOKEN" != "" ]
         then
@@ -84,6 +89,13 @@ runs:
           kit::wf::group 'Configure CLI' \
             <<<"tracetest configure --endpoint $TRACETEST_ENDPOINT"
             tracetest configure --endpoint $TRACETEST_ENDPOINT
+            exit 0
+        fi
+        if [ "$TRACETEST_CONFIG_FILE_CONTENT" != "" ]
+        then
+          kit::wf::group 'Configure CLI' \
+            <<<"Copying config file content to ~/.tracetest/config.yml"
+            cat $TRACETEST_CONFIG_FILE_CONTENT > ~/.tracetest/config.yml
         fi
 
     - id: start-agent
