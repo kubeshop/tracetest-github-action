@@ -104,6 +104,8 @@ runs:
           exit 0
         fi
 
+        AGENT_LOG="${{ runner.temp }}/tracetest-agent.$RANDOM.log"
         echo '🟢 Running background agent daemon'
-        nohup tracetest start --api-key $TRACETEST_API_KEY --mode verbose
+        nohup tracetest start --api-key $TRACETEST_API_KEY --mode verbose < /dev/null &> "$AGENT_LOG"
+        echo $AGENT_LOG
         sleep $SLEEP_TIME
