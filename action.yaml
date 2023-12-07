@@ -88,7 +88,10 @@ runs:
         then
           mkdir ~/.tracetest
           echo -e "$TRACETEST_CONFIG_FILE_CONTENT" >> ~/.tracetest/config.yml
+
+          echo "🔎 CLI Config file content:"
           cat ~/.tracetest/config.yml
+
           echo "🟢 Tracetest CLI successfully configured with configFile"
         fi
 
