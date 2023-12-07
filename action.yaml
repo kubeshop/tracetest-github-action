@@ -88,6 +88,7 @@ runs:
           echo "🟢 Tracetest CLI successfully configured with cliConfig"
         fi
 
+    # To understand nohup magic: https://unix.stackexchange.com/questions/269805/how-can-i-detach-a-process-from-a-bash-script
     - id: start-agent
       name: Start Tracetest Agent
       shell: bash
@@ -106,6 +107,6 @@ runs:
 
         AGENT_LOG="${{ runner.temp }}/tracetest-agent.$RANDOM.log"
         echo '🟢 Running background agent daemon'
-        nohup tracetest start --api-key $TRACETEST_API_KEY --mode verbose < /dev/null &> "$AGENT_LOG"
+        nohup tracetest start --api-key $TRACETEST_API_KEY --mode verbose < /dev/null &> "$AGENT_LOG" &
         echo $AGENT_LOG
         sleep $SLEEP_TIME
