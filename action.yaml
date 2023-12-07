@@ -16,8 +16,10 @@ inputs:
     description: 'Agent API Key'
   endpoint:
     description: 'Tracetest endpoint'
+  # Due to a Github limitation, this string should be escaped with \n
+  # https://github.com/orgs/community/discussions/12882
   configFile:
-    description: 'Tracetest CLI custom config file'
+    description: 'Tracetest CLI custom config file string'
   sleep:
     description: 'Seconds to wait before action finished (default as `3`)'
     default: '3'
@@ -85,8 +87,7 @@ runs:
         if [ "$TRACETEST_CONFIG_FILE_CONTENT" != "" ]
         then
           mkdir ~/.tracetest
-          echo $TRACETEST_CONFIG_FILE_CONTENT > ~/.tracetest/config.yml
-          echo $TRACETEST_CONFIG_FILE_CONTENT
+          echo -e $TRACETEST_CONFIG_FILE_CONTENT > ~/.tracetest/config.yml
           cat ~/.tracetest/config.yml
           echo "🟢 Tracetest CLI successfully configured with configFile"
         fi
