@@ -1,0 +1,23 @@
+name: Running Trace-based tests using Tracetest CLI and Tracetest Core
+
+on:
+  # allows the manual trigger
+  workflow_dispatch:
+
+jobs:
+  trace-based-tests:
+    name: Run trace based tests for your API
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure Tracetest CLI
+        uses: kubeshop/tracetest-github-action@main
+        with:
+          endpoint: "{URL to your Tracetest Core Server}"
+
+      - name: Run tests
+        run: |
+          tracetest run test --file ./your-test-scenario.yaml

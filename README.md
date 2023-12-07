@@ -5,3 +5,4 @@
 Placing `use: kubeshop/tracetest-github-action@v1` into a GitHub Action workflow gives you a simple way to run Tracetest CLI and/or Tracetest Agent by installing and configuring the tools.
 
 You then proceed to run Tracetest trace-based tests.
+

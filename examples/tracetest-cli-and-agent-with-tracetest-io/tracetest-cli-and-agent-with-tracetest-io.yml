@@ -1,0 +1,28 @@
+name: Running Trace-based tests using Tracetest Agent and CLI with Tracetest.io
+
+on:
+  # allows the manual trigger
+  workflow_dispatch:
+
+jobs:
+  trace-based-tests:
+    name: Run trace based tests for your API
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run API to be tested locally with docker
+        run: |
+          docker compose -f ./docker-compose.yaml up --detach --quiet-pull
+
+      - name: Configure Tracetest CLI and Agent
+        uses: kubeshop/tracetest-github-action@v1
+        with:
+          token: "{your tracetest token}" # See https://docs.tracetest.io/concepts/environment-tokens for more details
+          apiKey: "{your tracetest agent apiKey}" # See https://docs.tracetest.io/concepts/agent for more details
+
+      - name: Run tests
+        run: |
+          tracetest run test --file ./your-test-scenario.yaml
