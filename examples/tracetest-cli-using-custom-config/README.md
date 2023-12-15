@@ -1,4 +1,4 @@
-# Running Trace-based tests using Tracetest CLI with custom config on Tracetest.io
+# Running Trace-based Tests using Tracetest CLI with Custom Config on Tracetest.io
 
 To add Tracetest to your GitHub pipeline and use [Tracetest CLI](https://docs.tracetest.io/cli/cli-installation-reference) to run tests on [Tracetest](https://app.tracetest.io/) using a customized config, you need to add the following snippet in your workflow as a step:
 

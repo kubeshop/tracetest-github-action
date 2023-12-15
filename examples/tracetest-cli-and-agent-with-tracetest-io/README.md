@@ -1,4 +1,4 @@
-# Running Trace-based tests using Tracetest Agent and CLI with Tracetest.io
+# Running Trace-based Tests using Tracetest Agent and CLI with Tracetest.io
 
 To add Tracetest to your GitHub pipeline and use [Tracetest CLI](https://docs.tracetest.io/cli/cli-installation-reference) and [Tracetest Agent](https://docs.tracetest.io/concepts/agent) to run tests on [Tracetest](https://app.tracetest.io/), you need to add the following snippet in your workflow as a step:
 

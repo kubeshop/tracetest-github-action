@@ -1,4 +1,4 @@
-# Running Trace-based tests using Tracetest CLI and Tracetest Core
+# Running Trace-based Tests using Tracetest CLI and Tracetest Core
 
 To add Tracetest to your GitHub pipeline and use [Tracetest CLI](https://docs.tracetest.io/cli/cli-installation-reference) to run tests on your own [Tracetest Core Server](https://docs.tracetest.io/core/getting-started/installation#install-the-tracetest-server), you need to add the following snippet in your workflow as a step:
 
