@@ -1,6 +1,6 @@
 # Running Trace-based tests using Tracetest CLI and Tracetest Core
 
-To add Tracetest to your GitHub pipeline and use [Tracetest CLI](https://docs.tracetest.io/cli/cli-installation-reference) to run tests of your own [Tracetest Core server](https://docs.tracetest.io/core/getting-started/installation#install-the-tracetest-server), you need just to add the following snippet in your workflow as a step:
+To add Tracetest to your GitHub pipeline and use [Tracetest CLI](https://docs.tracetest.io/cli/cli-installation-reference) to run tests on your own [Tracetest Core Server](https://docs.tracetest.io/core/getting-started/installation#install-the-tracetest-server), you need to add the following snippet in your workflow as a step:
 
 ```yaml
 - name: Configure Tracetest CLI
@@ -11,4 +11,4 @@ To add Tracetest to your GitHub pipeline and use [Tracetest CLI](https://docs.tr
 
 The `endpoint` parameter is the base address where your Tracetest Core Server is installed.
 
-A full example of usage can be seen on [tracetest-cli-with-tracetest-core.yml](./tracetest-cli-with-tracetest-core.yml) file located in this folder.
+Here's a full example of how to use it: [tracetest-cli-with-tracetest-core.yml](./tracetest-cli-with-tracetest-core.yml)
