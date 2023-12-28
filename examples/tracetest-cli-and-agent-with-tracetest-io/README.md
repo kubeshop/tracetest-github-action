@@ -12,4 +12,7 @@ To add Tracetest to your GitHub pipeline and use [Tracetest CLI](https://docs.tr
 
 You can get your Tracetest Token from the Tracetest settings page by following the directions described [here](https://docs.tracetest.io/concepts/environment-tokens). The Tracetest Agent APIKey can be seen on the `Agent` tab on `Settings` page.
 
+If you don't need to start an Agent on your GitHub pipeline, you can declare only the `token` parameter and use it. You can see more details on [Running Trace-based Tests using the Tracetest CLI with Tracetest.io.
+](https://github.com/kubeshop/tracetest-github-action/tree/main/examples/tracetest-cli-with-tracetest-io).
+
 Here's a full example of how to use it: [tracetest-cli-and-agent-with-tracetest-io.yml](./tracetest-cli-and-agent-with-tracetest-io.yml) 
